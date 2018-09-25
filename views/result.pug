@@ -1,0 +1,19 @@
+extends layout
+
+block content
+    h1 #{title}
+    div
+        label(for='keyword') Keyword: #{keyword}
+    div
+        label(for='firstTenMinutes') First 10 minutes: #{averageFirst}
+    div
+        label(for='lastTenMinutes') Last 10 minutes: #{averageLast}
+    div
+        label(for='quotient') Quotient: #{finalAverage}
+    table(style='width:100%', border='1')
+        tr
+            each time in times
+                td= time
+        tr
+            each value in values
+                td= value
