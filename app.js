@@ -49,7 +49,7 @@ app.post('/engage', function (req, res) {
 
 //Start Server
 app.listen(port, function () {
-    console.log('Server started on port 3001...');
+    console.log(`Server started on port ${port}`);
 });
 
 function parseDataGoogleTrend(results)
