@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const googleTrends = require('google-trends-api');
+const port = process.env.PORT || 5000;
 
 // Init App
 const app = express();
@@ -47,7 +48,7 @@ app.post('/engage', function (req, res) {
 });
 
 //Start Server
-app.listen(3001, function () {
+app.listen(port, function () {
     console.log('Server started on port 3001...');
 });
 
