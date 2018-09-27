@@ -3,7 +3,7 @@ extends layout
 block content
     h1 #{title}
     form(method='POST' action='/engage')
-        #form-group
+        div.form-group
             label(for='keyword') Keyword: 
-            input.form-control#keyword(type='text', name='keyword')
+            input.form-control#keyword(type='text', name='keyword', placeholder="Enter keywords")
         input.btn.btn-primary(type='submit', value='Submit')

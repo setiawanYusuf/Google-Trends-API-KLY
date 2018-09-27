@@ -1,20 +1,62 @@
 extends layout
 
 block content
-    h1 #{title}
-    div
-        label(for='keyword') Keyword: #{keyword}
-    div
-        label(for='firstTenMinutes') First 10 minutes: #{averageFirst}
-    div
-        label(for='lastTenMinutes') Last 10 minutes: #{averageLast}
-    div
-        label(for='quotient') Quotient: #{finalAverage}
-    table(style='width:100%', border='1')
-        tr
-            each time in times
-                td= time
-        tr
-            each value in values
-                td= value
-    a(href='/') Back
+    div.container-fluid
+        div.row
+            h1 #{title}
+        br
+        if dataLength > 1
+            - for (var i = 0; i < dataLength; ++i) {
+                div.row
+                    label(for='keyword') Keyword: #{keyword[i]}
+                div.row
+                    label(for='firstTenMinutes') First 10 minutes: #{averageFirst[i]}
+                div.row
+                    label(for='lastTenMinutes') Last 10 minutes: #{averageLast[i]}
+                div.row
+                    label(for='quotient') Quotient: #{finalAverage[i]}
+                div.row(style= 'overflow-x:auto')
+                    table.table.table-dark(style='width:100%', border='1')
+                        thead.thead-dark
+                            tr
+                                th= 'Datetime'
+                                each time in times
+                                    th= time
+                        tbody
+                            tr
+                                td= 'Count'
+                                each value in values[i]
+                                    td= value
+
+                if (i != (dataLength-1)) 
+                    hr
+                    br
+                else
+                    br
+            - }
+                
+        else
+            div.row
+                label(for='keyword') Keyword: #{keyword}
+            div.row
+                label(for='firstTenMinutes') First 10 minutes: #{averageFirst}
+            div.row
+                label(for='lastTenMinutes') Last 10 minutes: #{averageLast}
+            div.row
+                label(for='quotient') Quotient: #{finalAverage}
+            div.row(style= 'overflow-x:auto')
+                table.table.table-dark(style='width:100%', border='1')
+                    thead.thead-dark
+                        tr
+                            th= 'Datetime'
+                            each time in times
+                                th= time
+                    tbody
+                        tr
+                            td= 'Count'
+                            each value in values
+                                td= value
+        br
+        div.row
+            a(href='/') Back
+            
