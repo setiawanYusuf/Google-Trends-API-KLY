@@ -24,12 +24,8 @@ app.use(bodyParser.json());
 // Home Route
 app.get('/', function (req, res) {
     if (req.query.keywords) {
-        var keyword = req.query.keywords;
-        var temp = stringHelpers.parseKeywords(keyword);
-        keyword = temp['keywords'];
-        var dataLength = temp['dataLength'];
-
-        main(res, keyword, dataLength);
+        var result = init(req);
+        main(res, result['keyword'], result['dataLength']);
     } else {
         res.render('index', {
             title: 'Google Trends Trial',
@@ -38,13 +34,23 @@ app.get('/', function (req, res) {
 });
 
 app.post('/engage', function (req, res) {
-    var keyword = req.body.keyword;
+    var result = init(req);
+    main(res, result['keyword'], result['dataLength']);
+});
+
+function init(req)
+{
+    var keyword = req.body.keyword || req.query.keywords;
     var temp = stringHelpers.parseKeywords(keyword);
     keyword = temp['keywords'];
     var dataLength = temp['dataLength'];
 
-    main(res, keyword, dataLength);
-});
+    var result = new Array();
+    result['keyword'] = keyword;
+    result['dataLength'] = dataLength;
+
+    return result;
+}
 
 function main(res, keyword, dataLength)
 {
@@ -59,16 +65,17 @@ function main(res, keyword, dataLength)
         else
             var finalResult = googleTrendHelpers.parseDataGoogleTrend(dataLength, results);
 
-        res.render('result', {
-            title: 'Google Trends Trial',
-            keyword: keyword,
-            dataLength: dataLength,
-            values: finalResult['values'],
-            times: finalResult['times'],
-            averageFirst: finalResult['averageFirst'],
-            averageLast: finalResult['averageLast'],
-            finalAverage: finalResult['finalAverage']
-        });
+            res.render('result', {
+                title: 'Google Trends Trial',
+                keyword: keyword,
+                dataLength: dataLength,
+                values: finalResult['values'],
+                date: finalResult['date'],
+                times: finalResult['times'],
+                averageFirst: finalResult['averageFirst'],
+                averageLast: finalResult['averageLast'],
+                finalAverage: finalResult['finalAverage']
+            });
     });
 }
 

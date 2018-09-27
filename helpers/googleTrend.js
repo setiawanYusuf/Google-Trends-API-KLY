@@ -1,12 +1,14 @@
 const arrayHelpers = require('./array');
 const mathHelpers = require('./math');
+const dateHelpers = require('./date');
 
 //GOOGLE TRENDS
 exports.parseDataGoogleTrend = function (dataLength, results) {
     var arr = JSON.parse(results);
     var data = arr['default']['timelineData'];
     var times = [];
-    var values = []
+    var values = [];
+
     if (dataLength > 1) {
         var values = arrayHelpers.create2DArray(data.length, dataLength);
     }
@@ -23,16 +25,19 @@ exports.parseDataGoogleTrend = function (dataLength, results) {
                 var value = data[key]['value'][0];
                 values.push(value);
             }
-            var time = data[key]['formattedTime'];
+            if (key == 0) {
+                var date = dateHelpers.parseToDateOnly(data[key]['time']);
+            }
+            var time = dateHelpers.parseToTimeOnly(data[key]['time']);
             times.push(time);
         }
     }
 
-    var finalResult = operateResults(dataLength, values, times);
+    var finalResult = operateResults(dataLength, values, times, date);
     return finalResult;
 }
 
-function operateResults(dataLength, values, times) {
+function operateResults(dataLength, values, times, date) {
     if (dataLength > 1) {
         var finalResult = [];
         var valuesArray = [];
@@ -62,6 +67,7 @@ function operateResults(dataLength, values, times) {
 
         finalResult['values'] = valuesArray;
         finalResult['times'] = timesArray;
+        finalResult['date'] = date;
         finalResult['averageFirst'] = averageFirstArray;
         finalResult['averageLast'] = averageLastArray;
         finalResult['finalAverage'] = finalAverageArray;
@@ -75,6 +81,7 @@ function operateResults(dataLength, values, times) {
         var finalResult = new Array();
         finalResult['values'] = Object.values(values);
         finalResult['times'] = Object.values(times);
+        finalResult['date'] = date;
         finalResult['averageFirst'] = averageFirst;
         finalResult['averageLast'] = averageLast;
         finalResult['finalAverage'] = finalAverage;

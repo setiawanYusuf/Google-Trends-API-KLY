@@ -3,7 +3,7 @@ extends layout
 block content
     div.container-fluid
         div.row
-            h1 #{title}
+            h1 #{title} - #{date}
         br
         if dataLength > 1
             - for (var i = 0; i < dataLength; ++i) {
